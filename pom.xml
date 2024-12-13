@@ -52,13 +52,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- database-->
-		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
 		<!-- tests-->
 		<dependency>
 			<groupId>com.h2database</groupId>

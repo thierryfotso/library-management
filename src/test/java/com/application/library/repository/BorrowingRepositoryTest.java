@@ -1,17 +1,20 @@
 package com.application.library.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 import com.application.library.entity.Book;
 import com.application.library.entity.Borrowing;
 import com.application.library.entity.Member;
 
+@DirtiesContext
 @DataJpaTest
 @TestPropertySource("classpath:application-test.properties")
 public class BorrowingRepositoryTest {
@@ -33,6 +36,8 @@ public class BorrowingRepositoryTest {
 		borrowingRepository.save(borrowing);
 
 		final List<Borrowing> borrowings = borrowingRepository.findByMemberId(2L);
-		Assertions.assertThat(borrowings).hasSize(1);
+		assertThat(borrowings).hasSize(1);
+		assertThat(borrowings.get(0).getMember().getId()).isEqualTo(member.getId());
+		assertThat(borrowings.get(0).getBook().getId()).isEqualTo(book.getId());
 	}
 }

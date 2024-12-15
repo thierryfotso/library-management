@@ -15,7 +15,8 @@ import com.application.library.rest.dto.BorrowingRequest;
 public class BookMapper {
 
 	public Book convertToBook(final BookRequest bookDTO) {
-		return Book.builder().authorName(bookDTO.getAuthorName()).category(Category.from(bookDTO.getCategory()))
+		return Book.builder().id(bookDTO.getId()).authorName(bookDTO.getAuthorName())
+				.category(Category.from(bookDTO.getCategory()))
 				.isbn(bookDTO.getIsbn()).title(bookDTO.getTitle()).build();
 	}
 

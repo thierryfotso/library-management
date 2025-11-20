@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.application.library.entity.Book;
 import com.application.library.entity.Borrowing;
 import com.application.library.entity.Member;
+import com.application.library.entity.RoleName;
 import com.application.library.exception.BookAlreadyBorrowedException;
 import com.application.library.exception.BorrowingNotExistingException;
 import com.application.library.exception.ObjectNotFoundException;
@@ -43,7 +46,14 @@ public class BookController {
 	@Autowired
 	private BorrowingService borrowingService;
 
+	@GetMapping
+	public ResponseEntity<List<BookRequest>> getBooks() {
+		return ResponseEntity.ok(bookMapping.toBookRequest(bookService.getBooks()));
+	}
+
 	@PostMapping
+	// @Secured({"ADMIN"})
+	@PreAuthorize("hasAnyAuthority('" + RoleName.ADMIN + "')")
 	public ResponseEntity<BookRequest> createBook(@RequestBody final BookRequest bookRequest) {
 		final Book bookEntity = bookService.save(bookMapping.convertToBook(bookRequest));
 		return ResponseEntity.ok(bookMapping.convertToBookDTO(bookEntity));
@@ -98,5 +108,10 @@ public class BookController {
 		final List<BookRequest> borrowedBooks = borrowingService.getBorrowedBooksByMember(id).stream()
 				.map(Borrowing::getBook).map(bookMapping::convertToBookDTO).toList();
 		return ResponseEntity.ok(borrowedBooks);
+	}
+
+	@DeleteMapping(value = "/{idBook}")
+	public void deleteBook(@PathVariable("idBook") final Long id) {
+		bookService.delete(id);
 	}
 }

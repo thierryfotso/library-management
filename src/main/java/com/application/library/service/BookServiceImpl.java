@@ -1,5 +1,7 @@
 package com.application.library.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,11 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public Book get(final Long id) {
 		return bookRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<Book> getBooks() {
+		return bookRepository.findAll();
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.application.library.mappers;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -16,8 +18,12 @@ public class BookMapper {
 
 	public Book convertToBook(final BookRequest bookDTO) {
 		return Book.builder().id(bookDTO.getId()).authorName(bookDTO.getAuthorName())
-				.category(Category.from(bookDTO.getCategory()))
-				.isbn(bookDTO.getIsbn()).title(bookDTO.getTitle()).build();
+				.category(Category.from(bookDTO.getCategory())).isbn(bookDTO.getIsbn()).title(bookDTO.getTitle())
+				.build();
+	}
+
+	public List<BookRequest> toBookRequest(final List<Book> books) {
+		return books.stream().map(this::convertToBookDTO).collect(Collectors.toList());
 	}
 
 	public BookRequest convertToBookDTO(final Book book) {

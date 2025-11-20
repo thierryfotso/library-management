@@ -7,4 +7,6 @@ public interface MemberService {
 	Member save(final Member member);
 
 	Member getMember(Long memberId);
+
+	Member getMemberByEmail(final String email);
 }

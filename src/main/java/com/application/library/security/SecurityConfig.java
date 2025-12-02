@@ -38,6 +38,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.GET, "/api/book").authenticated()//
 						.requestMatchers("/api/book/borrow").hasAnyAuthority(RoleName.USER, RoleName.ADMIN)//
 						.requestMatchers(HttpMethod.DELETE, "/api/book/**").hasAuthority(RoleName.ADMIN)//
+						.requestMatchers(HttpMethod.DELETE, "/api/book/**").hasAuthority(RoleName.ADMIN)//
 						.anyRequest().authenticated());
 
 		httpSecurity.addFilter(new JWTAuthenticationFilter(jwtService, authenticationManager));
